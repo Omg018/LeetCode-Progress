@@ -4,9 +4,16 @@ class Solution:
         for num in nums:
             seen[num] = seen.get(num, 0) + 1
         
-        sorted_seen = dict(sorted(seen.items(), key=lambda x: x[1], reverse=True))
-        arr = list(sorted_seen.keys())
-        arrs = arr[0:k]
-        return arrs
-       
-          
+        bucket = [[] for _ in range(len(nums) + 1)]
+
+        for num, freq in seen.items():
+            bucket[freq].append(num)
+        
+        ans = []
+
+        for freq in range(len(bucket) - 1, 0, -1):
+            for num in bucket[freq]:
+                ans.append(num)
+
+                if len(ans) == k:
+                    return ans
